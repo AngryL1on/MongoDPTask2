@@ -1,16 +1,11 @@
 package ru.rut.manga.init;
 
-import ru.rut.manga.models.Book;
-import ru.rut.manga.models.Film;
-import ru.rut.manga.models.Food;
-import ru.rut.manga.services.BookService;
-import ru.rut.manga.services.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import ru.rut.manga.services.BookService;
+import ru.rut.manga.services.FilmService;
 import ru.rut.manga.services.FoodService;
-
-import java.util.List;
 
 @Component
 public class CustomCode implements CommandLineRunner {

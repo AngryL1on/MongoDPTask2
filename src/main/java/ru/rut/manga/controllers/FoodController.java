@@ -24,7 +24,7 @@ public class FoodController {
 
 
     @GetMapping("/foods/getBy")
-    Optional<Food> getFood(@RequestParam String id) throws Throwable {
+    Optional<Food> getFood(@RequestParam String id) {
         return Optional.ofNullable(foodService.getFood(String.valueOf(id)));
 
     }

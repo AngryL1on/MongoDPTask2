@@ -22,6 +22,6 @@ public interface BookRepository extends MongoRepository<Book, String> {
 //
 //    // Custom Query
 //    // Search for a book by genre and time period
-//    @Query("{ 'genre' : ?0, 'timePeriod' : ?1 }")
-//    List<Book> findCustomQuery(String genre, String timePeriod);
+
+    List<Book> findCustomQuery(String genre, String timePeriod);
 }

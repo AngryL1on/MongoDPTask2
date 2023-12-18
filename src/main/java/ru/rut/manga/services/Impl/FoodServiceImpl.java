@@ -32,7 +32,7 @@ public class FoodServiceImpl implements FoodService{
     @Override
     public Food getFood(String id) {
         return presentRepo.findById(id)
-                .orElseThrow(()->new ClientErrorException.NotFoundException("Подарок с id=[%s] не найден", id));
+                .orElseThrow(()->new ClientErrorException.NotFoundException("Блюдо с id=[%s] не найдено", id));
     }
     @Override
     public void deleteFood(String id) {
@@ -52,15 +52,13 @@ public class FoodServiceImpl implements FoodService{
     @Override
     public Food updateFood(String id, Food updatedFoods) {
         Food existingFoods = presentRepo.findById(id)
-                .orElseThrow(() -> new ClientErrorException("Подарок с id=[%s] не найден " + id) {
+                .orElseThrow(() -> new ClientErrorException("Блюдо с id=[%s] не найдено " + id) {
                 });
         existingFoods.setName(updatedFoods.getName());
         existingFoods.setCategory(updatedFoods.getCategory());
         existingFoods.setCountry(updatedFoods.getCountry());
 
-        Food savedFoods = presentRepo.save(existingFoods);
-
-        return savedFoods;
+        return presentRepo.save(existingFoods);
     }
 
 }

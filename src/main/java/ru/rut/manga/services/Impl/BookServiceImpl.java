@@ -1,24 +1,33 @@
 package ru.rut.manga.services.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.stereotype.Service;
 import ru.rut.manga.errors.ClientErrorException;
 import ru.rut.manga.models.Book;
 import ru.rut.manga.repositories.BookRepository;
 import ru.rut.manga.services.BookService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepo;
 
+    private final MongoTemplate mongoTemplate;
+
     @Autowired
-    public BookServiceImpl(BookRepository bookRepo) {
+    public BookServiceImpl(BookRepository bookRepo, MongoTemplate mongoTemplate) {
         this.bookRepo = bookRepo;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
@@ -45,7 +54,7 @@ public class BookServiceImpl implements BookService {
     public Book getBook(String id) {
         return bookRepo.findById(id)
                 .orElseThrow(()->new
-                        ClientErrorException.NotFoundException("Бактерия с id=[%s] не найдена", id));
+                        ClientErrorException.NotFoundException("Книга с id=[%s] не найдена", id));
     }
 
     @Override
@@ -67,5 +76,20 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getAllBooks() {
         return bookRepo.findAll();
+    }
+
+    @Override
+    public List<GenreAggregationResult> findCustomQuery(String genre, String timePeriod) {
+        MatchOperation matchStage = match(Criteria.where("genre").is(genre).and("timePeriod").is(timePeriod));
+
+        GroupOperation groupByGenre = group("genre")
+                .count().as("count");
+
+        Aggregation aggregation = newAggregation(matchStage, groupByGenre);
+
+        AggregationResults<GenreAggregationResult> result =
+                mongoTemplate.aggregate(aggregation, "yourCollectionName", GenreAggregationResult.class);
+
+        return result.getMappedResults();
     }
 }

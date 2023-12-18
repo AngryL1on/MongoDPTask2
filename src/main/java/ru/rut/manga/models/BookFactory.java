@@ -37,9 +37,9 @@ public class BookFactory{
     }
 
     public class BooksListDTOFactory {
-        public List<Book> books(int min, int max, UnaryOperator<Book>...bacterias) {
+        public List<Book> books(int min, int max, UnaryOperator<Book>...books) {
             return IntStream.range(0, faker.number().numberBetween(min, max))
-                    .mapToObj(i-> BookFactory.this.make(bacterias))
+                    .mapToObj(i-> BookFactory.this.make(books))
                     .collect(Collectors.toList());
         }
     }

@@ -6,17 +6,22 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookService{
-        Book createBook(Book book);
+    Book createBook(Book book);
 
-        Optional<Book> findById(String id);
-        Book getBook(String id);
-        List<Book> getAllBooks();
+    Optional<Book> findById(String id);
 
-        Book updateBook(String id, Book book);
+    Book getBook(String id);
 
-        void deleteBook(String id);
-        void deleteAllBooks();
+    List<Book> getAllBooks();
 
-        List<Book> saveAllBooks(List<Book> books);
-//        List<Book> findCiliaBetween(int starting, int ending);
+    Book updateBook(String id, Book book);
+
+    void deleteBook(String id);
+
+    void deleteAllBooks();
+
+    List<Book> saveAllBooks(List<Book> books);
+
+
+    List<Book> findCustomQuery(String genre, String timePeriod);
 }

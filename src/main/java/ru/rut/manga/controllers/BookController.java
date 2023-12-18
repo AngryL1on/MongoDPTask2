@@ -29,7 +29,7 @@ public class BookController{
     }
 
     @GetMapping("/books/getBy")
-    Optional<Book> one(@RequestParam String id) throws Throwable {
+    Optional<Book> one(@RequestParam String id) {
         return Optional.ofNullable(bookService.getBook(String.valueOf(id)));
     }
 

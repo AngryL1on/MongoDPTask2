@@ -5,6 +5,7 @@ import ru.rut.manga.services.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,7 +15,7 @@ public class FilmController{
     private FilmService filmService;
 
     @GetMapping("/films")
-    Iterable<Film> all() {
+    List<Film> all() {
         return filmService.getAllFilms();
     }
 
@@ -24,7 +25,7 @@ public class FilmController{
     }
 
     @GetMapping("/films/getBy")
-    Optional<Film> one(@RequestParam String id) throws Throwable {
+    Optional<Film> one(@RequestParam String id) {
         return Optional.ofNullable(filmService.getFilm(String.valueOf(id)));
     }
 

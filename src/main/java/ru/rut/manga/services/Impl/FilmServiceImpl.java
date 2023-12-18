@@ -1,15 +1,15 @@
 package ru.rut.manga.services.Impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import ru.rut.manga.errors.ClientErrorException;
 import ru.rut.manga.models.Film;
 import ru.rut.manga.repositories.BookRepository;
 import ru.rut.manga.repositories.FilmRepository;
 import ru.rut.manga.services.BookService;
 import ru.rut.manga.services.FilmService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,23 +44,23 @@ public class FilmServiceImpl implements FilmService{
     public Film getFilm(String id) {
         return filmRepo.findById(id)
             .orElseThrow(()->new
-                    ClientErrorException.NotFoundException("Книга с id=[%s] не найдена", id));
+                    ClientErrorException.NotFoundException("Фильм с id=[%s] не найдена", id));
     }
 
     @Override
     public void deleteFilm(String id) {
         Film film = getFilm(id);
-        System.out.println(film.getBooks());
-        for(var b: film.getBooks()){
-            bookService.deleteBook(b.getId());
-//            bacteriaRepo.delete(b);
-//            bacteriaRepo.deleteById(b.getId());
-        }
+        // Проверка на null, чтобы избежать NullPointerException
+            for (var book : film.getBooks()) {
+                bookRepo.delete(book);
+                bookRepo.deleteById(book.getId());
+            }
         filmRepo.deleteById(id);
     }
 
     @Override
     public void deleteAllFilms() {
+        getAllFilms().stream().map(Film::getId).forEach(this::deleteFilm);
         filmRepo.deleteAll();
     }
 
@@ -71,8 +71,7 @@ public class FilmServiceImpl implements FilmService{
 
     @Override
     public Page<Film> getFilms(Pageable pageable) {
-        Page<Film> films = filmRepo.findAll(pageable);
-        return films;
+        return filmRepo.findAll(pageable);
     }
 
     @Override

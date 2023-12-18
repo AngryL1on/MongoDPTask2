@@ -22,7 +22,7 @@ public class Init implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         bookServices.deleteAllBooks();
-        List<Book> books = bookFactory.listBuilder().books(2, 2);
+        List<Book> books = bookFactory.listBuilder().books(2, 3);
         books = bookServices.saveAllBooks(books);
 
         Film films = new Film("2", "Thriller", "Post-Apocalyptic", "Handheld", books);

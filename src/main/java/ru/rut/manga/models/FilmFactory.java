@@ -38,10 +38,10 @@ public class FilmFactory{
     }
 
     public class BooksListDTOFactory {
-        public List<Film> films(int min, int max, UnaryOperator<Film>...fungis) {
+        public List<Film> films(int min, int max, UnaryOperator<Film>...films) {
 
             return IntStream.range(0, faker.number().numberBetween(min, max))
-                .mapToObj(i-> FilmFactory.this.make(fungis))
+                .mapToObj(i-> FilmFactory.this.make(films))
                 .collect(Collectors.toList());
         }
     }

@@ -2,6 +2,7 @@ package ru.rut.manga.models;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -20,7 +21,7 @@ public class Film{
     @Field(name="cinematographyStyle")
     private String cinematographyStyle;
 
-    @Field(name = "books")
+    @DBRef
     List<Book> books;
 
     public Film() {
